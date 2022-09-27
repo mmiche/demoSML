@@ -8,6 +8,6 @@ Published (where, when) - No.
 
 Under peer review. No.
 
-Submitted to a peer reviewed journal. No.
+Submitted to a peer reviewed journal. Next.
 
-Awaiting co-author(s) feedback. Yes.
+Awaiting co-author(s) feedback. No.
