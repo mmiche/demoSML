@@ -1,0 +1,69 @@
+#' A data set, used in demoSML vignettes C0, C1, and C2.
+#'
+#' The data set was published along with Kuhn et al. (2021).
+#'
+#' @format A data.frame with 1597 rows and 13 columns:
+#' \itemize{
+#'   \item covid_general_total - outcome (continuous scale). Freeman et al. (2022).
+#'   \item age (years).
+#'   \item sex (0 = male, 1 = female).
+#'   \item country (country of residence, 0 = Germany, 1 = German-speaking Switzerland).
+#'   \item years_edu (years of education).
+#'   \item polit_orient (political orientation, 1 = far left, 7 = far right). Baier & Manzoni (2020); Freeman et al. (2022).
+#'   \item JTC_extreme (JTC jumping to conclusions, 0 = no extreme JTC, 1 = extreme JTC; see \strong{Details}). Speechley et al. (2010); Dudley et al. (2016).
+#'   \item JTC_decthreshold (JTC jumping to conclusions decision threshold, 0 = highest JTC tendency, 100 = lowest JTC tendency)
+#'   \item BADE_emot (Bias against disconfirmatory evidence, emotional scenario in the BADE task, measuring the determination to stick to one's initial interpretation, despite being presented with a gradual sequence of disconfirmatory evidence: -10 = highest determination, 10 = lowest determination.) Woodward et al. (2006).
+#'   \item BADE_neutr (Bias against disconfirmatory evidence, neutral scenario in the BADE task, measuring the determination to stick to one's initial interpretation, despite being presented with a gradual sequence of disconfirmatory evidence: -10 = highest determination, 10 = lowest determination.)
+#'   \item BADE_total (Bias against disconfirmatory evidence, both, the neutral and the emotional scenario in the BADE task, measuring the determination to stick to one's initial interpretation, despite being presented with a gradual sequence of disconfirmatory evidence: -10 = highest determination, 10 = lowest determination.)
+#'   \item PCL_total trait paranoid ideation (sum score of 18 self-report items). Freeman et al. (2005); Lincoln et al. (2009).
+#'   \item poss_mistaken (possibility of being mistaken, single self-report item, 0 = 0 percent, 100 = 100 percent). E.g., Dudley et al. (2011).
+#' }
+#'
+#' @details JTC extreme was coded as present, when subjects had a 'draws to decision' (DTD) value of 2 or less. DTD values could range from 0 to 11. Since 11 denoted the smallest possible jumping to conclusion bias, very low values denote high JTC, values 2 or less denote 'extreme' JTC.
+#'
+#' @docType data
+#' @keywords datasets
+#' @name supplc
+#'
+#' @references
+#' 
+#' \insertRef{baier2020verschworungsmentalitat}{demoSML}
+#' 
+#' \insertRef{dudley2011jumping}{demoSML}
+#' 
+#' \insertRef{dudley2016psychosis}{demoSML}
+#' 
+#' \insertRef{freeman2005psychological}{demoSML}
+#' 
+#' \insertRef{freeman2022coronavirus}{demoSML}
+#' 
+#' \insertRef{KuhnEtAl2021}{demoSML}
+#' 
+#' \insertRef{lincoln2009impact}{demoSML}
+#' 
+#' \insertRef{speechley2010contribution}{demoSML}
+#' 
+#' \insertRef{woodward2006contribution}{demoSML}
+#'
+#' @usage data(supplc)
+#' @examples
+#' # Display the structure of the data set in the console
+#' str(supplc)
+#' # Console output:
+#' # 'data.frame':	1597 obs. of  13 variables:
+#' # $ covid_general_total: num  23.67 69.56 63.89 1.44 2.33 ...
+#' # $ age                : num  59 38 43 58 68 68 41 25 27 35 ...
+#' # $ sex                : num  1 0 1 0 1 0 1 0 0 0 ...
+#' # $ country            : num  0 1 0 0 0 0 1 1 0 1 ...
+#' # $ years_edu          : num  18 16 11.5 18 10 10 11.5 13 16 13 ...
+#' # $ polit_orient       : num  3 4 3 3 5 4 4 3 6 4 ...
+#' # $ JTC_extreme        : num  0 1 1 1 1 0 1 1 1 0 ...
+#' # $ JTC_decthreshold   : num  99 89 68 65 65 100 55 80 66 100 ...
+#' # $ BADE_emot          : num  7 -0.5 0 3 3.5 3.5 -3 4 4.5 6 ...
+#' # $ BADE_neutr         : num  5 0.5 1.5 5 2 3.5 1.5 3 4.5 10 ...
+#' # $ BADE_total         : num  6 0 0.75 4 2.75 3.5 -0.75 3.5 4.5 8 ...
+#' # $ PCL_total          : num  43 66 52 24 26 20 28 33 54 28 ...
+#' # $ poss_mistaken      : num  0 58 51 0 10 20 23 20 52 0 ...
+#'
+#' @source R package demoSML and \url{https://osf.io/sypt6/}
+"supplc"
