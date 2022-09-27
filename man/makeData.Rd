@@ -15,7 +15,7 @@ makeData(n = 500, errMean = 0, errSD = 1, seed = 1, intercept = 1, xCoef = 3)
 
 \item{seed}{A single integer value. Setting a seed ensures reproducibility of a once simulated data set.}
 
-\item{intercept}{Intercept of a simulated model output, defaults value is 1.}
+\item{intercept}{Intercept of a simulated model output, default value is 1.}
 
 \item{xCoef}{Regression coefficient of a simulated model output, defaults to the coefficient 3.}
 }
