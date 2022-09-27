@@ -1,0 +1,191 @@
+# Source of this R script:
+# https://github.com/mmiche/demoSML
+# Code that belongs to demoSML package vignette:
+# 'A1: No or almost no experience with R code'
+# ------------------------------------------------------------
+# R beginners' code demonstration, tailored to what is needed to understand the machine learning demonstration code.
+# >>> All code lines that start with the sharp symbol # are ignored by R, which is why comments in R always begin with this symbol. "Ignored by R" means that when the user executes a commenting line in the R script, R will not evaluate the line, but simply display it in the R console.
+# ------------------------------------------------------------
+# Various basic elements to be used, and to be combined, in R.
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# First. Assign a value to a variable.
+# ------------------------------
+# Assign a value (here: 2) to a variable (here: a)
+a <- 2 # <- is the assignment symbol; a is the variable name
+a = 2 # = can also be used as assignment symbol instead of <-
+#
+# A variable name must start with a letter and may not be identical to any of the reserved words in R:
+# https://stat.ethz.ch/R-manual/R-devel/library/base/html/Reserved.html
+#
+# In order to have a variable be displayed in the R console, either put the entire code line in round brackets, like this:
+(a <- 2)
+# or enter the variable name in either the R console and press Enter, or in a separate line in the R script, then execute that line, like this:
+a # Execute: Press keys Control and Enter (Windows Keyboard), Command and Enter (Mac Keyboard), or click the Run button, in case you use RStudio, ...
+# More options exist, figure out what you like best.
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# Second. A vector.
+# ------------------------------
+# A vector usually consists of one or more values, each of the values must be of the same class as the other values in the vector. For example:
+vecNumeric <- c(2, 3, 1, 4) # Numeric values
+vecCharacter <- c("L", "U", "K", "Y") # Character values
+vecLogical <- c(TRUE, FALSE, FALSE, TRUE) # Logical values
+# Extract certain parts of a vector
+vecCharacter[c(2, 4)] # extract second and fourth value
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# Third. A data frame.
+# ------------------------------
+# A data frame usually consists of two or more vectors, each of the vectors must have the same length as the other vectors.
+datDf <- data.frame(vecNumeric, vecCharacter, vecLogical)
+# Display the size (dimension) of a data set (data.frame)
+dim(datDf) # datDf conists of 4 rows and 3 columns
+# Display the column names of the data set
+colnames(datDf)
+# Extract certain columns of the data set
+datDf[,c("vecNumeric", "vecLogical")]
+# Extract certain rows of the data set, e.g., rows 1 and 3
+datDf[c(1, 3),]
+# N O T E: The single square brackets are important, along with the comma symbol within the square brackets:
+# datDf[rows,] ... required rows, then the comma symbol
+# datDf[,columns] ... comma symbol, then the required columns
+# datDf[rows,columns] ... combine it, like this:
+# Rows 1 and 3, columns vecNumeric and vecLogical
+datDf[c(1, 3),c("vecNumeric", "vecLogical")]
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# Fourth. A list.
+# ------------------------------
+# One difference between a data frame and a list is the length of the vectors. That is, while in a data frame the vectors must all have the same length, in a list the vectors' length may differ.
+datLs <- list(vecNumeric[c(1, 3)], # vector with two values
+              vecCharacter, # vector with four values
+              vecLogical[4]) # vector with one value
+# N O T E: The vectors' length can, as opposed to must, differ.
+datLs1 <- list(vecNumeric, vecCharacter, vecLogical) # datLs1: append "1" to the variable name datLs, only in order to keep both variable names distinct from one another.
+# Display the number of vectors in datLs
+length(datLs) # Three vectors are part of the list datLs
+# Want to know the length of each vector in the list? Use the function 'lapply', which is automatically available every time R has been launched.
+# lapply = apply the function (FUN) to each element in the list: Return length of each vector.
+lapply(X = datLs, FUN = length)
+# Miscellaneous
+# Display certain vectors of the list
+datLs[c(1,3)]
+# Display one vector
+datLs[2] # With single square brackets you can display the vector in the console, but its class is still 'list', see:
+class(datLs[2])
+# Extract one vector 'as a vector', using double square brackets.
+datLs[[2]]
+class(datLs[[2]]) # 'character' is the class of the values in this vector.
+# Display the structure (str) of datLs
+str(datLs) # num = numeric, chr = character, logi = logical
+#
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# Combine your gained R knowledge from script lines 9-70 to script lines 75-180.
+# ------------------------------
+# You can apply the function 'str' (str = structure) also to a data frame:
+str(datDf)
+# Transform a data frame into a list. No problem, because each vector keeps its original length, only now the vectors are part of a list. 
+as.list(datDf)
+# Transform a list into a data frame. Only possible if all vectors in the list have the same length (as is the case in datLs1)
+as.data.frame(datLs1, col.names=c("col1", "col2", "col3")) # col.names is one of the optional arguments of the automatically available function 'as.data.frame'. Want to know the details of a function, e.g., of 'as.data.frame', enter question mark, followed by, without an empty space, the function name:
+?as.data.frame
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# Fifth. Repeat the same computation several times.
+# ------------------------------
+# The function 'lapply' was applied to datLs (see script line 60). The argument FUN was set to 'length'. Therefore, lapply applied the function 'length' to each of the elements of the list (each element being a vector with a certain length).
+# A so-called for-loop can also be used to repeatedly apply one or more functions to a data object. For example:
+for(i in c(2, 3)) {
+    cat("Original order of vector:\n") # "\n" = single line break
+    print(datLs1[[i]])
+    cat("Ordered according to values in the first vector of the list.\n")
+    print(datLs1[[i]][datLs1[[1]]])
+    cat("-------------------\n\n") # "\n\n" = double line break
+}
+# Values in the first vector of the list are:
+datLs1[[1]]
+# Understand the output of the for-loop:
+# -------------------------------------
+# Both vectors number two and three of datLs1 (c(2,3)) are printed to the console in their original order, then in another order. The other order is determined by the first vector in datLs1, both times (repeatedly!): 2, 3, 1, 4, meaning: re-order the vector in the current loop, so that:
+# - the second (2) original value comes first,
+# - the third (3) original value comes second,
+# - the first (1) original value comes third,
+# - and the fourth (4) original value comes fourth (last).
+# The last value is the only value that is last in the original and in the re-ordered vector.
+# Everything in the for-loop is executed in each loop (here: two loops). The letter i is a placeholder that is used in the loop. In the first of the two loops i equals to the value 2, whereas in the second loop i equals to the value 3.
+# Sometimes a 'tough' concept to understand (for R beginners) is this one:
+# datLs1[[i]][datLs1[[1]]] # See script line 91 (print command is omitted here)
+# How does this make sense?
+# Replace (as the for-loop does) i with the value 2:
+datLs1[[2]] # Original vector number two within datLs1.
+datLs1[[1]] # Original vector number one within datLs1.
+# Remember script line 29, where the second and fourth value of the vector were extracted? You could also say that a new vector was generated that consisted of the second and fourth value of the original vector. You could also have generated a new vector with the same two values, but in reversed order, like this:
+vecCharacter[c(4, 2)] # fourth and second value of vecCharacter
+# How does this help to understand script line 91 and 106? Well, a new vector is generated by reordering the original vector. The only thing that is 'different' is that the same amount of values are 'extracted' from the original vector. There are no other conceptual differences between script lines 29 and 91 (or 106), see:
+datLs1[[2]][c(2, 3, 1, 4)] # [c(2, 3, 1, 4)] is the same as: [datLs1[[1]]], see:
+datLs1[[2]][datLs1[[1]]]
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# Sixth. Make your own function.
+# ------------------------------
+# You can use any of the thousands of R packages, each of which containing at least one function, mostly several functions. If you need (or want) something to be done YOUR way, you may need to make your own function. Or search the internet for a function that hopefully does what you want (often a good idea, sometimes not).
+# Name of my own function is 'myWay'. Takes one function argument, called x, which should be of the class 'list'.
+myWay <- function(x) {
+    # First, display this sentence in the R console. Why? Because I say so.
+    cat("Have it your way? All right.\n\n")
+    # If x is not of class 'list', stop the function, return an error message.
+    if(!is.list(x)) {
+        # This is the error message.
+        stop("x must be a list, how often must I remind you!?")
+    }
+    # Empty vector that shall collect the second value of each vector in the list x.
+    secondValueInVector <- c()
+    # for-loop. One loop for each vector in the list.
+    # length(x), see script line 57. 1:length(x), ":" means "from to", e.g., 1:4 means "from 1 to 4", therefore it is the same as the vector c(1, 2, 3, 4).
+    for(i in 1:length(x)) {
+        # In each loop, find out whether the current vector in x has length two or greater, in which case ...
+        if(length(x[[i]]) >= 2) {
+            # ... extract the second value from the current vector and collect it, by appending it to the variable secondValueInVector.
+            secondValueInVector <- c(secondValueInVector, x[[i]][2])
+        # Else, the current vector must have a length less than two, in which case ...
+        } else {
+            # ... append the logical value NA (not available) to secondValueInVector.
+            secondValueInVector <- c(secondValueInVector, NA)
+        }
+    }
+    # At the end, return the vector secondValueInVector.
+    return(secondValueInVector)
+}
+# Before using the function 'myWay', you first need to execute script lines 121-146, which renders the function available to the user.
+# Test 'myWay', using data object datLs (see script line 52-54). datLs contains three vectors, with lengths two, four, and one, respectively. Therefore, we expect the returned vector from function 'myWay' to contain two values and one NA (last value in the returned vector).
+myWay(x=datLs) # R automatically converts the values to class character. Why? See script line 24: A vector must contain values of one class only. Since the letter "U" cannot be converted to a numeric value, but the value 1 can be converted to a character value, this is what R does in such a case.
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# Seventh. Nesting, part 1.
+# ------------------------------
+# A list, unlike a data frame, can be used in very many ways. That is, a list can contain any data structures. For example: A list can contain lists, that is, the elements of the list are again of the class list (lists nested within a list):
+seventhLs1 <- list(listNumberOne=list(aVec=1, bVec=1:2),
+                      listNumberTwo=list(charVec=c("a", "b", "d", "z")))
+# Or: A list that contains a list, a data frame, and a vector (diverse data objects nested within a list):
+seventhLs2 <- list(innerList=list(aVec=1, bVec=1:2),
+                      innerDf=datDf,
+                      vecAlone="I feel so alone, where are the other vectors, are they part of other lists? This can't be the only list in the universe!?")
+# Since we have two lists here, let us put them in the function 'myWay' (which only accepts data objects of the class 'list'):
+myWay(x=seventhLs1) # seventhLs1 contains two lists. The first list contains two vectors (aVec and bVec; in principle like a vector that contains two values), therefore the second element of listNumberOne (= bVec) is outputted (this is what myWay was programmed to do). The second list contains one vector (in principle like a vector with less than two values), therefore NA is returned by 'myWay' (again, as myWay was programmed to do).
+myWay(x=seventhLs2) # seventhLs2 contains a list with two vectors, a data frame with three columns, and a vector with one value (one weird sentence). Therefore, the second vector of the list (= bVec), the second column of the data frame (= vecCharacter), and NA is returned by 'myWay'.
+# Conclusion: Even though 'myWay' was constructed with having lists in mind that contain vectors, 'myWay' still works with lists that contain data structures other than vectors.
+# But: Do not expect this to be the rule. Often you will have to troubleshoot your own function, because 'surprisingly' it cannot handle something you thought it could handle. That is why it is often a good idea to first search the internet for an available function that does what you want, hopefully sparing you bad surprises.
+# -o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o-o
+# Eighth. Nesting, part 2.
+# ------------------------------
+# A for-loop can be nested within another for-loop, similar to having a mirror, both, behind and in front of you, which shows your face in the mirror, within the mirror, within ... and so forth).
+# Run this for-loop and compare code lines 170-181 with the output in the R console.
+for(i in 1:2) {
+    cat("i is", i, "\n")
+    cat("- - - - -\n")
+    for(j in 1:3) {
+        cat("\nj is", j, "\n")
+        cat("-  -  -  -  -\n\n")
+        for(k in 1:4) {
+            cat("And what do you think what k is,", k, "?\n")
+        }
+    }
+    cat("- * - * - * - * - * - * - * - * - *\n\n")
+}
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# End of beginner R script.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
