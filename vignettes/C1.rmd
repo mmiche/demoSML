@@ -1,0 +1,198 @@
+---
+title: "C1: R code Kuhn et al. (2021) data set"
+author: Marcel Miché
+date: 2022-09-27
+output:
+  html_document:
+    theme: yeti
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{C1: R code Kuhn et al. (2021) data set}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# C1: R code Kuhn et al. (2021) data set
+
+> **Details regarding the outcome and the predictors (what they mean and their scales), see this demoSML documentation of the data set 'supplc'.**
+
+New in this C1 vignette, compared to previous vignettes, especially compared to C0:
+
+* Use of a professional machine learning software package: mlr3verse
+
+The purpose of the C1 vignette is to check whether we can replicate the results from the C0 vignette, using the [mlr3](https://mlr3book.mlr-org.com/) (Lang and Schratz, 2019) software collection. We will only use the original outcome values here, not the log-transformed values.
+
+## Load required R package (install first, if not yet installed)
+```{r echo=TRUE, eval = FALSE}
+library(mlr3verse)
+```
+
+Required data set is loaded automatically, once this demoSML package has been loaded.
+
+```{r echo=TRUE, eval = FALSE}
+library(demoSML)
+# Assign data set supplc to variable name d
+d <- supplc
+```
+
+## Step 1: Preprocessing
+
+First, we will not include BADE_total in the predictor set (multicollinearity; see C0 vignette).
+
+```{r echo=TRUE, eval = FALSE}
+# Do not include BADE_total in the model (ignore index 11).
+(analysis <- colnames(d)[c(1:10,12:13)])
+```
+
+## Step 2: Model selection
+
+```{r echo=TRUE, eval = FALSE}
+# Linear regression model
+LINREG <- lrn("regr.lm")
+# z-transform predictors: po("scale", center=TRUE), add this to LINREG
+linreg.z <- po("scale", center = TRUE) %>>% po("learner", LINREG)
+
+# Lasso regression model (selected by setting alpha to 1)
+LASSO <- lrn("regr.glmnet", alpha = 1, s=1.1)
+# z-transform predictors: po("scale", center=TRUE), add this to LASSO
+lasso.z <- po("scale", center = TRUE) %>>% po("learner", LASSO)
+```
+
+## Replicate 10 training and 10 test subsets
+
+mlr3 provides a function for custom resampling, which is perfect for our replication attempt. This custom resampling requires to have set up the prediction task first:
+
+Set up the prediction task
+```{r echo=TRUE, eval = FALSE}
+# Reg regression, d name of data set, backend: the data, target: name of outcome variable
+(tskReg <- TaskRegr$new(id="dReg", backend=d[,analysis], target="covid_general_total"))
+# Output
+<TaskRegr:dReg> (1597 x 12)
+* Target: covid_general_total
+* Properties: -
+* Features (11):
+  - dbl (11): BADE_emot, BADE_neutr, JTC_decthreshold, JTC_extreme, PCL_total, age, country,
+    polit_orient, poss_mistaken, sex, years_edu
+```
+
+Generate the same 10 training and test subsets
+
+Note. This corresonds to steps 3 (tuning), 4 (training), and 5 (test) of the six sML steps. However, as introduced in the C0 vignette (see C0 vignette table of contents: 'Steps 3-6: Tuning, training, testing, and evaluating'), in the current comparison of the linear and the lasso regression model we use a fixed tuning value in the lasso model, which is why we split the total sample size only in two subsets, making the test performance the final prediction performance. This means that sML step 6 is not required **in this C1 vignette**.
+
+```{r echo=TRUE, eval = FALSE}
+# Same 10 seeds as in the C0 vignette
+seeds <- c(24388, 59521, 43307, 69586, 11571,
+           25173, 32618, 13903, 8229, 25305)
+# Two empty lists, with which to collect the training and test assignments
+trainLs <- testLs <- list()
+for(i in 1:length(seeds)) {
+    # Set the seed (from the vector seeds, one seed per loop)
+    set.seed(seeds[i])
+    # Randomly assign 80% of the total sample to be training cases.
+    trainLs[[i]] <- sample(nrow(d), .8 * nrow(d))
+    # Assign the remaining 20% to be test cases.
+    testLs[[i]] <- setdiff(seq_len(nrow(d)), trainLs[[i]])
+}
+```
+
+Pass the training and the test list (trainLs and testLs) to the custom resampling function.
+```{r echo=TRUE, eval = FALSE}
+# Select custom resampling
+resamplingCustom <- rsmp("custom")
+# Instantiate custom resampling with a list for training and for testing.
+resamplingCustom$instantiate(tskReg, train_sets = trainLs, test_sets = testLs)
+```
+
+## Steps 3-5
+
+Steps 3-5 are part of the following code, even though they cannot be seen any longer. The only thing that can be seen is the lasso tuning, in step 2 above (s is fixated to 1.1).
+```{r echo=TRUE, eval = FALSE}
+# Set up the competition design.
+design <- benchmark_grid(tasks = tskReg,
+                         learners=list(linreg.z,
+                                       lasso.z),
+                         resamplings = resamplingCustom)
+# Start the competition. bmr = benchmark result
+bmr <- benchmark(design, store_models = TRUE)
+```
+
+We can see that the task (tskReg) has been passed to the mlr3 function benchmark_grid. Also both learners (with the predictors being z-transformed) and the custom resampling has been passed to benchmark_grid.
+
+Finally, the competition between the linear model and the lasso model is started by using the benchmark function (models can be stored, if the user wants to: store_models = TRUE). The variable name bmr will contain all results.
+
+Access the test performance results, in order to see whether our replication attempt was successful.
+```{r echo=TRUE, eval = FALSE}
+as.data.table(bmr$score()[,c("learner_id", "regr.mse")])
+# Output
+# scale.regr.lm = linear model, scale.regr.glmnet = lasso model
+           learner_id regr.mse
+ 1:     scale.regr.lm 416.6534
+ 2:     scale.regr.lm 456.7386
+ 3:     scale.regr.lm 394.8990
+ 4:     scale.regr.lm 389.0075
+ 5:     scale.regr.lm 414.1738
+ 6:     scale.regr.lm 383.3298
+ 7:     scale.regr.lm 399.1159
+ 8:     scale.regr.lm 426.4046
+ 9:     scale.regr.lm 447.0375
+10:     scale.regr.lm 451.1563
+11: scale.regr.glmnet 416.0371
+12: scale.regr.glmnet 458.3216
+13: scale.regr.glmnet 392.7142
+14: scale.regr.glmnet 397.7967
+15: scale.regr.glmnet 414.8000
+16: scale.regr.glmnet 386.4130
+17: scale.regr.glmnet 402.4599
+18: scale.regr.glmnet 426.0281
+19: scale.regr.glmnet 456.7877
+20: scale.regr.glmnet 455.2050
+```
+
+These are the test performance results from the C0 vignette:
+```{r echo=TRUE, eval = FALSE}
+# testLM = linear model, testLO = lasso model
+     testLM   testLO
+1  416.6534 416.0374
+2  456.7386 458.3217
+3  394.8990 392.7143
+4  389.0075 397.7975
+5  414.1738 414.7999
+6  383.3298 386.4126
+7  399.1159 402.4591
+8  426.4046 426.0281
+9  447.0375 456.7870
+10 451.1563 455.2052
+```
+
+The results for the linear regression model are all identical, the results for the lasso regression model are sightly different (maximum difference in lasso results no.4 and 7, each difference = .0008).
+
+The overall average test performance, also in the lasso model, is the same here, as in the C0 vignette.
+```{r echo=TRUE, eval = FALSE}
+# C0 vignette overall average mean squared prediction error
+# LM linear model, LO lasso model.
+  testLM   testLO 
+417.8517 420.6563
+
+# mlr3 function 'aggregate'
+bmr$aggregate()
+# Output
+   nr      resample_result task_id        learner_id resampling_id iters regr.mse
+1:  1 <ResampleResult[22]>    dReg     scale.regr.lm        custom    10 417.8517
+2:  2 <ResampleResult[22]>    dReg scale.regr.glmnet        custom    10 420.6563
+```
+
+**Conclusion**
+
+We successfully replicated the results from the C0 vignette. The tiny differences in the lasso test performances appear negligible.
+
+Notably, the used data set (Kuhn et al., 2021) is based on a cross-sectional study design. In order to 'predict' an outcome, longitudinal study designs are preferred, where predictors were measured prior to the outcome. For instance, if the outcome is a mental disorder, the predictors of the study baseline are often used to predict the first lifetime development of the mental disorder at follow up. (Outcome cases at baseline must have been removed before fitting the training model.)
+
+**References**
+
+Kuhn, S.A.K., Lieb, R., Freeman, D., Andreou, C., Zander-Schellenberg, T. (2021). Coronavirus conspiracy beliefs in the German-speaking general population: endorsement rates and links to reasoning biases and paranoia. *Psychological Medicine* 1–15. [https://doi.org/10.1017/S0033291721001124](https://doi.org/10.1017/S0033291721001124)
+
+Lang, M. & Schratz, P. (2021). mlr3verse: Easily Install and Load the 'mlr3' Package Family. [https://mlr3verse.mlr-org.com](https://mlr3verse.mlr-org.com), [https://github.com/mlr-org/mlr3verse](https://github.com/mlr-org/mlr3verse).

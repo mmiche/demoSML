@@ -1,0 +1,78 @@
+---
+title: "A0: demoSML Read me first"
+author: Marcel Miché
+date: 2022-09-27
+output:
+  html_document:
+    theme: yeti
+    toc: false
+vignette: >
+  %\VignetteIndexEntry{A0: demoSML Read me first}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# A0 demoSML: Read me first
+
+## demoSML - Demonstration of supervised machine learning (sML)
+
+The word supervised means that the outcome variable of interest is already fully labeled.
+
+### demoSML vignettes - Structure
+
+This vignette provides a short explanation of how this demoSML package is structured.
+
+Our demoSML package is structured in alphabetical order. Each vignette starts with an upper case letter. Then a number may follow if a substructure is needed. This is why this vignette starts with A0.
+
+The specific purpose of this demoSML package is to provide the Supplementary Materials to our paper on ‘A demonstration of supervised machine learning for psychological researchers’.
+
+### Detailed code inspection
+
+Methodological experts recommend *to publish all sML code and data*, along with the main sML research article (e.g., rule no. 9 in Boulesteix, 2015). Since this R package accompanies an sML demonstration paper, we publish, as a matter of course, all code and data that we used in our paper, in its three Appendices, and in the Supplementary Materials (see overview vignettes A-D below). This way, the interested reader can inspect the R code in detail.
+
+This demoSML package provides sML data analysis examples that use published data from two of our research groups (Kuhn et al., 2021; Wahl et al., 2022). The relevant variables are documented separately as part of the demoSML package (see demoSML documentation, Help Pages, ‘supplc’, and ‘suppld’, respectively).
+
+### Six sML steps
+
+Each vignette is introduced with what it specifically offers that has not been offered in the previous vignettes. In order to guide the reader, the chunks of R code are tied to one of the six sML steps presented in our paper. Either the headline or a separate note identifies the sML step to which the code chunk belongs.
+
+### Supervised ML - Hide and seek
+
+In anticipation of the reader’s emerging motivation to experiment with sML using own data, the vignettes become increasingly more detailed in terms of applying sML. Widely available  professional software usually provides the service of ‘not bothering the user with details’. Yet, it is both satisfying as well as useful and, in our view, an indispensable professional requirement to fully understand what goes on behind the (sML) scenes, especially when applying sML in order to answer psychological research questions.
+
+## Vignettes A-D in this demoSML package
+
+1. A0: demoSML Read me first: demoSML introduction and overview of the other vignettes.
+
+2. A1: No, or almost no, experience with R code: Code examples for R beginners tailored to what the demoSML code examples contain (e.g., using a ‘for loop’ or writing your own function).
+
+3. B0: R code for our paper and Appendices A and B: All code to replicate every result and visualization in the paper and Appendices A and B.
+
+4. B1: R code for Appendix C: All code to replicate every result and visualization in Appendix C.
+
+5. C0: R code Kuhn et al. (2021) data set: Apply sML principles to a real data set, comparing the linear with the lasso regression model. The example code lets the interested reader inspect the sML steps in great detail.
+
+6. C1: R code Kuhn et al. (2021) data set: Attempt to reproduce the results from the C0 vignette using the professional machine learning software package [mlr3](https://mlr3book.mlr-org.com/) (Lang and Schratz, 2019).
+
+7. C2: R code Kuhn et al. (2021) data set: Apply not just the linear and the lasso regression model to the data set, but various other models, using [mlr3](https://mlr3book.mlr-org.com/).
+
+8. D: R code Wahl et al. (2022) data set: Replicate one of the results from Wahl et al. (2022) using [mlr3](https://mlr3book.mlr-org.com/). Supervised ML is applied to sensor data from a smartwatch that was worn around the wrist while washing hands. Individuals washed their hands in two ways:
+    * The way they usually wash their hands (‘normal’ hand-washing).
+    * The way obsessive-compulsive patients would wash their hands, using written directions (‘obsessive-compulsive’ hand-washing).
+    
+    The goal of the sML analysis was to predict an individual’s way of hand-washing (normal versus obsessive-compulsive) as accurately as possible using all other individuals’ hand-washing sensor data to train the prediction models.
+
+**References**
+
+Boulesteix, A. L. (2015). Ten simple rules for reducing overoptimistic reporting in methodological computational research. *PLoS Computational Biology*, *11*(4), e1004191. [https://doi.org/10.1371/journal.pcbi.1004191](https://doi.org/10.1371/journal.pcbi.1004191)
+
+Kuhn, S.A.K., Lieb, R., Freeman, D., Andreou, C., Zander-Schellenberg, T. (2021). Coronavirus conspiracy beliefs in the German-speaking general population: endorsement rates and links to reasoning biases and paranoia. *Psychological Medicine* 1–15. [https://doi.org/10.1017/S0033291721001124](https://doi.org/10.1017/S0033291721001124)
+
+Lang, M. & Schratz, P. (2021). mlr3verse: Easily Install and Load the 'mlr3' Package Family. [https://mlr3verse.mlr-org.com](https://mlr3verse.mlr-org.com), [https://github.com/mlr-org/mlr3verse](https://github.com/mlr-org/mlr3verse).
+
+Wahl, K., Scholl, P. M., Wirth, S., Miché, M., Häni, J., Schülin, P., & Lieb, R. (2022). On the automatic detection of enacted compulsive hand washing using commercially available wearable devices. Computers in *Biology and Medicine*, *143*, 105280. [https://doi.org/10.1016/j.compbiomed.2022.105280](https://doi.org/10.1016/j.compbiomed.2022.105280)
+
