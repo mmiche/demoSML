@@ -1,0 +1,48 @@
+#' A data set, used in demoSML vignette D.
+#'
+#' The data stems from sensor recordings of wrist movements, that is, from carrying a smartwatch while washing the hands.
+#'
+#' @format A data.frame with 453 rows and 8 columns; see \strong{Details}):
+#' \itemize{
+#'   \item subject: participant identifier (range between 1 and 21).
+#'   \item washType: outcome, either natural or compulsive, the latter being the target class (the class the algorithm shall learn to accurately detect as 'compulsive').
+#'   \item washScript: written directions how to wash the hands compulsively (see \strong{Details}).
+#'   \item gyr_y_vr: variance of y-axis of the gyroscope sensor in the smartwatch.
+#'   \item gyr_z_vr: variance of z-axis of the gyroscope sensor in the smartwatch.
+#'   \item mag_x_vr: mean of the x-axis of the magnetometer in the smartwatch.
+#'   \item q2_z_mn: mean of the third (of four) components of the quarternion.
+#'   \item q2_z_var: variance of the third (of four) components of the quarternion.
+#' }
+#'
+#' @details Details regarding the sensors in the smartwatch, see section 2.8 Feature extraction and selection in Wahl et al. (2022).
+#' The hand-washing scripts (detailed written directions about each hand-washing movement) were collected in an earlier study, where patients with obsessive-compulsive disorder, whose main symptom was hand-washing, were asked to describe in utmost detail how they wash their hands compulsively.
+#'
+#' @docType data
+#' @keywords datasets
+#' @name suppld
+#'
+#' @usage data(suppld)
+#' @examples
+#' # Display the structure of suppld in the console
+#' str(suppld)
+#' # Console output:
+#' # 'data.frame':	453 obs. of  8 variables:
+#' # $ subject   : int  1 1 1 1 1 1 1 1 1 1 ...
+#' # $ washType  : Factor w/ 2 levels "compulsive","natural": 2 2 2 1 1 1 1 1 1 1 ...
+#' # $ washScript: chr  "E" "E" "E" "E" ...
+#' # $ gyr_y_vr  : num  0.654 0.118 0.059 0.118 0.102 ...
+#' # $ gyr_z_vr  : num  0.238 0.2682 0.0835 0.1143 0.0957 ...
+#' # $ mag_x_vr  : num  71.8 50.3 16.7 98.5 16.1 ...
+#' # $ q2_z_mn   : num  0.1169 0.6302 0.922 0.1631 0.0773 ...
+#' # $ q2_z_vr   : num  0.360852 0.042342 0.000104 0.224646 0.287895 ...
+#'
+#' @source R package demoSML
+#'
+#' To download the raw (not preprocessed) data:
+#' \url{https://earth.informatik.uni-freiburg.de/ablutomania/}, scroll down to headline \strong{download} and select \strong{OCD Simulation Study 2019} to start the download. BEWARE: Data format is mkv, advanced Python programming skills are required to extract the raw data from the mkv files. Direkt link to raw mkv files: \url{https://earth.informatik.uni-freiburg.de/datasets/handwashing-2019/}.
+#'
+#' To prevent confusion: Having installed and loaded this demoSML R package, the data is loaded automatically.
+#
+#' @references
+#' \insertRef{WahlEtAl2022}{demoSML}
+"suppld"
