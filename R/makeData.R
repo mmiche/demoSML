@@ -10,7 +10,7 @@
 #
 #' @param errSD Standard deviation of the normal distribution, from which the error values shall be sampled. Default value is 1.
 #
-#' @param intercept Intercept of a simulated model output, defaults value is 1.
+#' @param intercept Intercept of a simulated model output, default value is 1.
 #
 #' @param seed A single integer value. Setting a seed ensures reproducibility of a once simulated data set.
 #
