@@ -397,14 +397,14 @@ for(n in smps) {
     meanPerf <- c()
     for(t in tunerGrid) {
         meanPerf <- c(meanPerf, colMeans(
-            myDemoSML1(data=ds, seed = setSeed, tune=t)$testValidDf)[1])
+            myDemoSML1(data=ds, seed = 1, tune=t)$testValidDf)[1])
     }
     # Put all 100 tuned test performances in a data.frame.
     tuneLin <- data.frame(x=1:length(tunerGrid), y=meanPerf, t=tunerGrid)
     # Select tuning value with the minimum test prediction error.
     linMin <- which(tuneLin$y == min(tuneLin$y))
     # Run again with the tuning value being set:
-    lm2 <- myDemoSML1(data=ds, seed = setSeed,
+    lm2 <- myDemoSML1(data=ds, seed = 1,
                       tune = tuneLin[linMin,"t"])
     
     # Collect test and validation prediction performance (all 5 outer runs)
