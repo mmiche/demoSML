@@ -6,7 +6,7 @@ Current (updated) status of the manuscript:
 
 Published (where, when) - No.
 
-Under peer review. No.
+Under peer review. Yes (since 2022-11-16).
 
 Submitted to a peer reviewed journal. Yes (since 2022-09-28).
 
